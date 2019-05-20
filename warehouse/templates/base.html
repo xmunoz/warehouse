@@ -137,6 +137,10 @@
     </button>
 
     <section id="sticky-notifications" class="stick-to-top js-stick-to-top">
+      {% block banners %}
+        {% csi request.route_path("includes.banners") %}
+        {% endcsi %}
+      {% endblock %}
       <!-- Add browser warning. Will show for ie9 and below -->
       <!--[if IE]>
       <div class="notification-bar notification-bar--danger">

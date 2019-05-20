@@ -81,6 +81,7 @@ def includeme(config):
         traverse="/{username}",
         domain=warehouse,
     )
+    config.add_route("includes.banners", "/_includes/banners", domain=warehouse)
 
     # Classifier Routes
     config.add_route("classifiers", "/classifiers/", domain=warehouse)

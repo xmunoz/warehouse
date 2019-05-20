@@ -386,6 +386,11 @@ def session_notifications(request):
     return {}
 
 
+@view_config(route_name="includes.banners", renderer="includes/banners.html")
+def banners(request):
+    return {}
+
+
 @view_config(route_name="health", renderer="string")
 def health(request):
     # This will ensure that we can access the database and run queries against

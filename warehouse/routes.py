@@ -128,8 +128,8 @@ def includeme(config):
         "accounts.verify-email", "/account/verify-email/", domain=warehouse
     )
     config.add_route(
-        "accounts.verify-project-role-email",
-        "/account/verify-project-role-email/",
+        "accounts.verify-project-role",
+        "/account/verify-project-role/",
         domain=warehouse,
     )
 

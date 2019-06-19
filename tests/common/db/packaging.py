@@ -104,6 +104,7 @@ class RoleFactory(WarehouseFactory):
     role_name = "Owner"
     user = factory.SubFactory(UserFactory)
     project = factory.SubFactory(ProjectFactory)
+    invitation_status = "APPROVED"
 
 
 class DependencyFactory(WarehouseFactory):

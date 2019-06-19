@@ -143,7 +143,6 @@ def send_password_reset_email(request, user_and_email):
 
 @_email("verify-email", allow_unverified=True)
 def send_email_verification_email(request, user_and_email):
-    # TODO
     user, email = user_and_email
     token_service = request.find_service(ITokenService, name="email")
     token = token_service.dumps({"action": "email-verify", "email.id": email.id})
@@ -197,7 +196,7 @@ def send_collaborator_added_email(
     }
 
 
-@_email("verify-project-role-email", allow_unverified=True)
+@_email("verify-project-role", allow_unverified=True)
 def send_project_role_verification_email(
     request, user, desired_role, initiator_username, project_name, role_id
 ):

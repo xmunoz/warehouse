@@ -591,11 +591,11 @@ def _get_two_factor_data(request, _redirect_to="/"):
 
 
 @view_config(
-    route_name="accounts.verify-project-role-email",
+    route_name="accounts.verify-project-role",
     uses_session=True,
     permission="manage:user",
 )
-def verify_project_role_email(request):
+def verify_project_role(request):
     token_service = request.find_service(ITokenService, name="email")
 
     def _error(message):
@@ -633,19 +633,9 @@ def verify_project_role_email(request):
 
     role.invitation_status = "APPROVED"
 
-    try:
-        project = (
-            request.db.query(Project)
-            .filter(Project.id == role.project_id)
-            .with_entities(Project.name)
-            .one()
-        )
-    except NoResultFound:
-        return _error("Project not found")
-
     request.db.add(
         JournalEntry(
-            name=project.name,
+            name=role.project.name,
             action=f"approved {current_user.name}",
             submitted_by=current_user,
             submitted_from=request.remote_addr,
@@ -654,11 +644,10 @@ def verify_project_role_email(request):
 
     owner_roles = (
         request.db.query(Role)
-        .join(Role.user)
         .filter(
             Role.role_name == "Owner",
-            Role.project == project,
-            Role.user_id != current_user.id,
+            Role.project  == role.project,
+            Role.user != current_user,
         )
     )
     owner_users = {owner.user for owner in owner_roles}
@@ -668,7 +657,7 @@ def verify_project_role_email(request):
         owner_users,
         user=current_user,
         submitter=current_user,
-        project_name=project.name,
+        project_name=role.project.name,
         role=role.role_name,
     )
 

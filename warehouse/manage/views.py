@@ -905,7 +905,6 @@ def manage_project_roles(project, request, _form_class=CreateRoleForm):
                 project_name=project.name,
                 role_id=role.id,
             )
-            print(res)
             request.session.flash("Invitation sent", queue="success")
         form = _form_class(user_service=user_service)
 

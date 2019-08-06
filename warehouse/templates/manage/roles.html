@@ -110,7 +110,11 @@
                 title="Remove {{ role.user.username }} from this project"
               {% endif %}
             >
+            {% if role.invitation_status == RoleInvitationStatus.Pending.value %}
+              Revoke invitation
+            {% else %}
               Remove
+            {% endif %}
             </button>
           </form>
         </td>

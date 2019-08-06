@@ -57,7 +57,7 @@ class Role(db.Model):
     __tablename__ = "roles"
     __table_args__ = (Index("roles_user_id_idx", "user_id"),)
 
-    __repr__ = make_repr("role_name", "user_name", "package_name")
+    __repr__ = make_repr("role_name", "user", "project", "invitation_status")
 
     role_name = Column(Text)
     user_id = Column(

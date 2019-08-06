@@ -11,14 +11,16 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
 -#}
-{% extends "email/_base/body.html" %}
-
+{% extends "email/_base/body.txt" %}
 
 {% block content %}
-<p>{{initiator_username}} has invited you (<code>{{ email_address }}</code>) to their PyPI project {{ project_name }}</p>
+{{ initiator_username }} has invited you ({{ email_address }}) to their PyPI project "{{ project_name }}".
 
-<p>If you wish to proceed with this request, <a href="{{ request.route_url('accounts.verify-project-role', _query={'token': token}) }}">click this link</a></p>
+If you wish to accept this invitation, follow this link:
 
-<p>This link will expire in {{ n_hours }} hours.</p>
+{{ request.route_url('accounts.verify-project-role', _query={'token': token}) }}
 
+Otherwise, you can safely ignore this email.
+
+This link will expire in {{ n_hours }} hours.
 {% endblock %}

@@ -14,4 +14,4 @@
 
 {% extends "email/_base/subject.txt" %}
 
-{% block subject %}Project Role Email verification{% endblock %}
+{% block subject %}{{ initiator_username }} has invited you to join the {{ project_name }} project{% endblock %}

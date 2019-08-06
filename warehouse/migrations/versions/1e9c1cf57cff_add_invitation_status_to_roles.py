@@ -27,6 +27,7 @@ down_revision = "48def930fcfd"
 
 def upgrade():
     op.add_column("roles", sa.Column("invitation_status", sa.Text(), nullable=True))
+    op.execute("UPDATE roles SET invitation_status='accepted';")
 
 
 def downgrade():

@@ -50,7 +50,13 @@ from warehouse.email import (
     send_email_verification_email,
     send_password_reset_email,
 )
-from warehouse.packaging.models import JournalEntry, Project, Release, Role
+from warehouse.packaging.models import (
+    JournalEntry,
+    Project,
+    Release,
+    Role,
+    RoleInvitationStatus,
+)
 from warehouse.utils.http import is_safe_url
 
 USER_ID_INSECURE_COOKIE = "user_id__insecure"
@@ -628,10 +634,10 @@ def verify_project_role(request):
     except NoResultFound:
         return _error("Role not found")
 
-    if role.invitation_status != "PENDING":
+    if role.invitation_status != RoleInvitationStatus.Pending.value:
         return _error("Role already assigned")
 
-    role.invitation_status = "APPROVED"
+    role.invitation_status = RoleInvitationStatus.Accepted.value
 
     request.db.add(
         JournalEntry(

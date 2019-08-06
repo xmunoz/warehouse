@@ -51,7 +51,14 @@ from warehouse.manage.forms import (
     ProvisionWebAuthnForm,
     SaveAccountForm,
 )
-from warehouse.packaging.models import File, JournalEntry, Project, Release, Role
+from warehouse.packaging.models import (
+    File,
+    JournalEntry,
+    Project,
+    Release,
+    Role,
+    RoleInvitationStatus,
+)
 from warehouse.utils.http import is_safe_url
 from warehouse.utils.paginate import paginate_url_factory
 from warehouse.utils.project import confirm_project, destroy_docs, remove_project
@@ -638,7 +645,10 @@ def manage_projects(request):
     all_user_projects = user_projects(request)
     not_approved_project_roles = (
         request.db.query(Role)
-        .filter(Role.user_id == request.user.id, Role.invitation_status == "PENDING")
+        .filter(
+            Role.user_id == request.user.id,
+            Role.invitation_status == RoleInvitationStatus.Pending.value,
+        )
         .with_entities(Role.project_id)
         .all()
     )
@@ -891,7 +901,7 @@ def manage_project_roles(project, request, _form_class=CreateRoleForm):
                 user=user,
                 project=project,
                 role_name=role_name,
-                invitation_status="PENDING",
+                invitation_status=RoleInvitationStatus.Pending.value,
             )
             request.db.add(role)
             request.db.flush()  # in order to get role id

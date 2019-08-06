@@ -32,6 +32,7 @@ from warehouse.accounts.interfaces import (
     TooManyFailedLogins,
 )
 from warehouse.admin.flags import AdminFlag
+from warehouse.packaging.models import RoleInvitationStatus
 
 from ...common.db.accounts import EmailFactory, UserFactory
 from ...common.db.packaging import ProjectFactory, RoleFactory
@@ -1499,7 +1500,7 @@ class TestVerifyProjectRole:
             role_name="Maintainer",
             user=user,
             project=project,
-            invitation_status="PENDING",
+            invitation_status=RoleInvitationStatus.Pending.value,
         )
         db_request.user = user
         db_request.GET.update({"token": "RANDOM_KEY"})
@@ -1524,7 +1525,7 @@ class TestVerifyProjectRole:
         result = views.verify_project_role(db_request)
 
         db_request.db.flush()
-        assert role.invitation_status == "APPROVED"
+        assert role.invitation_status == RoleInvitationStatus.Accepted.value
         assert isinstance(result, HTTPSeeOther)
         assert result.headers["Location"] == "/"
         assert db_request.route_path.calls == [pretend.call("manage.projects")]

@@ -52,6 +52,12 @@ from warehouse.utils import dotted_navigator
 from warehouse.utils.attrs import make_repr
 
 
+class RoleInvitationStatus(enum.Enum):
+
+    Pending = "pending"
+    Accepted = "accepted"
+
+
 class Role(db.Model):
 
     __tablename__ = "roles"

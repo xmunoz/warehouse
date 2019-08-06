@@ -2222,7 +2222,7 @@ class TestManageProjectRoles:
                 db_request,
                 new_user,
                 desired_role=owner_2_role.role_name,
-                initiator_username=db_request.user.name,
+                initiator_username=db_request.user.username,
                 project_name=project.name,
                 role_id=role.id,
             )

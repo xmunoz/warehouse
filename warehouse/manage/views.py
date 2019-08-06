@@ -902,7 +902,7 @@ def manage_project_roles(project, request, _form_class=CreateRoleForm):
                 request,
                 user,
                 desired_role=role_name,
-                initiator_username=request.user.name,
+                initiator_username=request.user.username,
                 project_name=project.name,
                 role_id=role.id,
             )

@@ -642,13 +642,10 @@ def verify_project_role(request):
         )
     )
 
-    owner_roles = (
-        request.db.query(Role)
-        .filter(
-            Role.role_name == "Owner",
-            Role.project  == role.project,
-            Role.user != current_user,
-        )
+    owner_roles = request.db.query(Role).filter(
+        Role.role_name == "Owner",
+        Role.project == role.project,
+        Role.user != current_user,
     )
     owner_users = {owner.user for owner in owner_roles}
 

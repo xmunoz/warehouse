@@ -895,9 +895,10 @@ def manage_project_roles(project, request, _form_class=CreateRoleForm):
             )
             request.db.add(role)
             request.db.flush()  # in order to get role id
+
             # send_project_role_verification_email needs to get request and user as
             # first args because of the @email_ decorator
-            res = send_project_role_verification_email(
+            send_project_role_verification_email(
                 request,
                 user,
                 desired_role=role_name,

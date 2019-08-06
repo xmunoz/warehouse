@@ -1495,13 +1495,23 @@ class TestVerifyProjectRole:
     ):
         user = UserFactory(is_active=False)
         project = ProjectFactory()
-        role = RoleFactory(role_name="Maintainer", user=user, project=project, invitation_status="PENDING")
+        role = RoleFactory(
+            role_name="Maintainer",
+            user=user,
+            project=project,
+            invitation_status="PENDING",
+        )
         db_request.user = user
         db_request.GET.update({"token": "RANDOM_KEY"})
         db_request.route_path = pretend.call_recorder(lambda name: "/")
         db_request.remote_addr = "192.168.1.1"
         token_service.loads = pretend.call_recorder(
-            lambda token: {"action": "email-project-role-verify", "email.id": str(user.id), "role_id": str(role.id), "desired_role": "Maintainer"}
+            lambda token: {
+                "action": "email-project-role-verify",
+                "email.id": str(user.id),
+                "role_id": str(role.id),
+                "desired_role": "Maintainer",
+            }
         )
         db_request.find_service = pretend.call_recorder(
             lambda *a, **kwargs: token_service
@@ -1520,10 +1530,7 @@ class TestVerifyProjectRole:
         assert db_request.route_path.calls == [pretend.call("manage.projects")]
         assert token_service.loads.calls == [pretend.call("RANDOM_KEY")]
         assert db_request.session.flash.calls == [
-            pretend.call(
-                "Role successfully added.",
-                queue="success",
-            )
+            pretend.call("Role successfully added.", queue="success")
         ]
         assert db_request.find_service.calls == [
             pretend.call(ITokenService, name="email")
@@ -1537,7 +1544,9 @@ class TestVerifyProjectRole:
             (TokenMissing, "Invalid token: no token supplied"),
         ],
     )
-    def test_verify_project_role_loads_failure(self, pyramid_request, exception, message):
+    def test_verify_project_role_loads_failure(
+        self, pyramid_request, exception, message
+    ):
         def loads(token):
             raise exception
 
@@ -1552,7 +1561,6 @@ class TestVerifyProjectRole:
         assert pyramid_request.session.flash.calls == [
             pretend.call(message, queue="error")
         ]
-
 
     def test_verify_email_invalid_action(self, pyramid_request):
         data = {"action": "invalid-action"}
@@ -1572,7 +1580,6 @@ class TestVerifyProjectRole:
             )
         ]
 
-
     def test_verify_project_role_role_not_found(
         self, db_request, user_service, token_service, monkeypatch
     ):
@@ -1581,7 +1588,12 @@ class TestVerifyProjectRole:
         db_request.GET.update({"token": "RANDOM_KEY"})
         db_request.route_path = pretend.call_recorder(lambda name: "/")
         token_service.loads = pretend.call_recorder(
-            lambda token: {"action": "email-project-role-verify", "email.id": str(user.id), "role_id": "deadbeef-dead-beef-dead-beefdeadbeef", "desired_role": "Maintainer"}
+            lambda token: {
+                "action": "email-project-role-verify",
+                "email.id": str(user.id),
+                "role_id": "deadbeef-dead-beef-dead-beefdeadbeef",
+                "desired_role": "Maintainer",
+            }
         )
         db_request.find_service = pretend.call_recorder(
             lambda *a, **kwargs: token_service
@@ -1606,7 +1618,12 @@ class TestVerifyProjectRole:
         db_request.route_path = pretend.call_recorder(lambda name: "/")
         db_request.remote_addr = "192.168.1.1"
         token_service.loads = pretend.call_recorder(
-            lambda token: {"action": "email-project-role-verify", "email.id": str(user.id), "role_id": str(role.id), "desired_role": "Maintainer"}
+            lambda token: {
+                "action": "email-project-role-verify",
+                "email.id": str(user.id),
+                "role_id": str(role.id),
+                "desired_role": "Maintainer",
+            }
         )
         db_request.find_service = pretend.call_recorder(
             lambda *a, **kwargs: token_service

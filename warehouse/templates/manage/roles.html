@@ -25,9 +25,9 @@
     <p>There are two possible roles for collaborators:</p>
     <dl>
       <dt>Maintainer</dt>
-      <dd>Can upload releases for a package. Cannot add collaborators. Cannot delete files, releases, or the project.</dd>
+      <dd>Can upload releases for a package. Cannot invite other collaborators. Cannot delete files, releases, or the project.</dd>
       <dt>Owner</dt>
-      <dd>Can upload releases. Can add other collaborators. Can delete files, releases, or the entire project.</dd>
+      <dd>Can upload releases. Can invite other collaborators. Can delete files, releases, or the entire project.</dd>
     </dl>
   </div>
   <table class="table table--light table--collaborators">
@@ -128,7 +128,7 @@
             {{ form.role_name }}
           </td>
           <td class="table__action">
-            <input type="submit" value="Add" class="button button--primary">
+            <input type="submit" value="Invite" class="button button--primary">
           </td>
         </tr>
         {% if form.errors %}
